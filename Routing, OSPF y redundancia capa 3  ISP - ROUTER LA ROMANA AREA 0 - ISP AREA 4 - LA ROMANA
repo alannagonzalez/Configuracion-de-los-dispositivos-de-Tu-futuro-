@@ -1,0 +1,46 @@
+=========================================
+ROUTER LA ROMANA
+AREA 0 - ISP
+AREA 4 - LA ROMANA
+=========================================
+
+enable
+configure terminal
+
+interface e0/0
+description Conexion Switch La Romana
+no shutdown
+exit
+
+interface e0/0.40
+encapsulation dot1Q 40
+ip address 192.168.6.1 255.255.255.128
+exit
+
+interface e0/0.45
+encapsulation dot1Q 45
+ip address 192.168.6.129 255.255.255.192
+exit
+
+interface e0/0.50
+encapsulation dot1Q 50
+ip address 192.168.6.193 255.255.255.192
+exit
+
+interface e0/1
+description Conexion ISP
+ip address 19.0.0.9 255.255.255.252
+no shutdown
+exit
+
+router ospf 1
+router-id 10.10.4.1
+network 19.0.0.8 0.0.0.3 area 0
+network 192.168.6.0 0.0.0.127 area 4
+network 192.168.6.128 0.0.0.63 area 4
+network 192.168.6.192 0.0.0.63 area 4
+exit
+
+end
+write memory
+
