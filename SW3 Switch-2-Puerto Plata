@@ -9,7 +9,7 @@ banner motd #
 !!!!	PROHIBIDO ACCESO SIN PERMISO 	!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #
-hostname SW2-Contabilidad-Marketing
+hostname SW3 Switch-2-Puerto Plata
 line console 0
 exec-timeout 15
 password quisqueya
