@@ -9,7 +9,7 @@ banner motd #
 !!!!	PROHIBIDO ACCESO SIN PERMISO 	!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #
-hostname Switch-Administracion
+hostname SW3-Administracion
 line console 0
 exec-timeout 15
 password quisqueya
