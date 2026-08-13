@@ -1,0 +1,87 @@
+---------------------
+SW3 Switch-2-Puerto Plata
+----------------------
+
+enable
+configure terminal
+banner motd # 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!	PROHIBIDO ACCESO SIN PERMISO 	!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+hostname SW2-Contabilidad-Marketing
+line console 0
+exec-timeout 15
+password quisqueya
+login local
+exit
+
+ip domain-name tufuturo.com.do
+spanning-tree mode rapid-pvst
+crypto key generate rsa
+2046
+ip ssh version 2
+username Efren privilege 15 password tigre
+username Ezequiel privilege 15 password leon
+username Oliver privilege 7 password aguila
+username Justin privilege 7 password lobo
+line vty 0 4
+exec-timeout 15
+transport input ssh
+login local
+logging synchronous
+password quisqueya
+exit
+ip ssh version 2
+vlan 55
+name Marketing
+exit
+vlan 60
+name Contabilidad
+exit
+vlan 100
+name BackBone
+exit
+
+
+
+service password-encryption
+
+
+
+interface e1/0
+no shutdown
+spanning-tree portfast
+spanning-tree bpduguard enable
+description Conexion Tecnologia
+switchport mode access
+switchport access vlan 60
+switchport port-security  
+switchport port-security maximum 5
+switchport port-security violation protect 
+exit
+
+
+interface range e0/0-2
+description Interfaz Port-Channel
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk native vlan 100
+switchport trunk allow	vlan all
+description Conexion Para Etherchannel
+spanning-tree link-type point-to-point
+no shutdown
+channel-protocol lacp
+channel-group 1 mode active
+exit
+interface port-channel 1
+description Interfaz Port-Channel
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk native vlan 100
+switchport trunk allow	vlan all
+exit
+
+
+
+do wr
