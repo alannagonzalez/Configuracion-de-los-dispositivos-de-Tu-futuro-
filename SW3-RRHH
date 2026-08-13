@@ -1,0 +1,63 @@
+---------------------
+SW3-RRHH
+----------------------
+
+enable
+configure terminal
+banner motd # 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!	PROHIBIDO ACCESO SIN PERMISO 	!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+hostname Switch-RRHH
+line console 0
+exec-timeout 15
+password quisqueya
+login local
+exit
+
+ip domain-name tufuturo.com.do
+spanning-tree mode rapid-pvst
+crypto key generate rsa
+2046
+ip ssh version 2
+username Efren privilege 15 password tigre
+username Ezequiel privilege 15 password leon
+username Oliver privilege 7 password aguila
+username Justin privilege 7 password lobo
+line vty 0 4
+exec-timeout 15
+transport input ssh
+login local
+logging synchronous
+password quisqueya
+exit
+ip ssh version 2
+
+service password-encryption
+
+interface range e0/0-1
+no shutdown
+description Conexion con MultiCapas
+switchport mode trunk
+switchport trunk native vlan 100
+spanning-tree link-type point-to-point
+exit
+
+VTP version 2
+VTP mode client
+VTP domain Futuro
+VTP password quisqueya
+
+interface e0/2
+no shutdown
+spanning-tree portfast
+spanning-tree bpduguard enable
+description Conexion RRHH
+switchport mode access
+switchport access vlan 10
+switchport port-security  
+switchport port-security maximum 5
+switchport port-security violation protect 
+exit
+do wr
