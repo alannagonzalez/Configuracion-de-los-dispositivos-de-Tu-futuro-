@@ -1,0 +1,48 @@
+=========================================
+ISP - BACKBONE OSPF AREA 0
+=========================================
+
+enable
+configure terminal
+
+interface f0/0
+description Conexion Santo Domingo
+ip address 19.0.0.2 255.255.255.252
+no shutdown
+exit
+
+interface fa1/0
+description Conexion Santiago
+ip address 19.0.0.6 255.255.255.252
+no shutdown
+exit
+
+interface fa2/0
+description Conexion La Romana
+ip address 19.0.0.10 255.255.255.252
+no shutdown
+exit
+
+interface f4/0
+description Conexion Puerto Plata
+ip address 19.0.0.14 255.255.255.252
+no shutdown
+exit
+
+interface fa5/0
+description Conexion Barahona
+ip address 19.0.0.18 255.255.255.252
+no shutdown
+exit
+
+router ospf 1
+router-id 10.10.10.1
+network 19.0.0.0 0.0.0.3 area 0
+network 19.0.0.4 0.0.0.3 area 0
+network 19.0.0.8 0.0.0.3 area 0
+network 19.0.0.12 0.0.0.3 area 0
+network 19.0.0.16 0.0.0.3 area 0
+exit
+
+end
+write memory
