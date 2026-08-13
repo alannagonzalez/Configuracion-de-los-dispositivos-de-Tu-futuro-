@@ -1,0 +1,44 @@
+-----------------------------------------
+SW1-Barahona
+-----------------------------------------
+enable
+configure terminal
+banner motd # 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!	PROHIBIDO ACCESO SIN PERMISO 	!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+hostname SW1-Barahona
+line console 0
+exec-timeout 15
+password quisqueya
+login local
+exit
+
+ip domain-name tufuturo.com.do
+spanning-tree mode rapid-pvst
+crypto key generate rsa
+2046
+ip ssh version 2
+username Efren privilege 15 password tigre
+username Ezequiel privilege 15 password leon
+username Oliver privilege 7 password aguila
+username Justin privilege 7 password lobo
+line vty 0 4
+exec-timeout 15
+transport input ssh
+login local
+logging synchronous
+password quisqueya
+exit
+ip ssh version 2
+service password-encryption
+vlan 65
+name Tecnologia
+exit
+vlan 70
+name Contabilidad
+exit
+vlan 100
+name BackBone
+exit
