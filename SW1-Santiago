@@ -8,7 +8,7 @@ banner motd #
 !!!!	PROHIBIDO ACCESO SIN PERMISO 	!!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #
-hostname SW2-Romana
+hostname SW1-Santiago
 line console 0
 exec-timeout 15
 password quisqueya
