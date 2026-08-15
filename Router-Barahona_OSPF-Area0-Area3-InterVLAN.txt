@@ -1,0 +1,39 @@
+=========================================
+ROUTER BARAHONA
+AREA 0 - ISP
+AREA 3 - BARAHONA
+=========================================
+
+enable
+configure terminal
+
+interface e0/0
+description Conexion Switch Barahona
+no shutdown
+exit
+
+interface e0/0.65
+encapsulation dot1Q 65
+ip address 192.168.8.1 255.255.255.128
+exit
+
+interface e0/0.70
+encapsulation dot1Q 70
+ip address 192.168.8.129 255.255.255.128
+exit
+
+interface e0/1
+description Conexion ISP
+ip address 19.0.0.17 255.255.255.252
+no shutdown
+exit
+
+router ospf 1
+router-id 10.10.3.1
+network 19.0.0.16 0.0.0.3 area 0
+network 192.168.8.0 0.0.0.127 area 3
+network 192.168.8.128 0.0.0.127 area 3
+exit
+
+end
+write memory
