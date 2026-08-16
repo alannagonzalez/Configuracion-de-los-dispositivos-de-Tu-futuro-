@@ -1,1 +1,66 @@
+=========================================
+MULTICAPA 2 - SANTO DOMINGO
+HSRP + GATEWAYS + OSPF AREA 1
+=========================================
 
+enable
+configure terminal
+
+ip routing
+
+interface e0/0
+description Conexion Router Santo Domingo
+no switchport
+ip address 192.168.9.6 255.255.255.252
+no shutdown
+exit
+
+interface vlan 5
+description Gateway Administracion
+ip address 192.168.0.3 255.255.255.0
+standby 5 ip 192.168.0.1
+standby 5 priority 100
+standby 5 preempt
+no shutdown
+exit
+
+interface vlan 10
+description Gateway RRHH
+ip address 192.168.1.3 255.255.255.128
+standby 10 ip 192.168.1.1
+standby 10 priority 100
+standby 10 preempt
+no shutdown
+exit
+
+interface vlan 15
+description Gateway Marketing
+ip address 192.168.1.131 255.255.255.128
+standby 15 ip 192.168.1.129
+standby 15 priority 100
+standby 15 preempt
+no shutdown
+exit
+
+interface vlan 20
+description Gateway Ventas
+ip address 192.168.2.3 255.255.255.128
+standby 20 ip 192.168.2.1
+standby 20 priority 100
+standby 20 preempt
+no shutdown
+exit
+
+router ospf 1
+router-id 10.10.1.3
+passive-interface default
+no passive-interface e0/0
+network 192.168.9.4 0.0.0.3 area 1
+network 192.168.0.0 0.0.0.255 area 1
+network 192.168.1.0 0.0.0.127 area 1
+network 192.168.1.128 0.0.0.127 area 1
+network 192.168.2.0 0.0.0.127 area 1
+exit
+
+end
+write memory
