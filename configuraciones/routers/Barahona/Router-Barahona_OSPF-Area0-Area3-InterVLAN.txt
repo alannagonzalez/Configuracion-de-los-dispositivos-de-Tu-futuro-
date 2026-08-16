@@ -4,6 +4,55 @@ AREA 0 - ISP
 AREA 3 - BARAHONA
 =========================================
 
+! =========================================
+! CONFIGURACIÓN BÁSICA - ROUTER BARAHONA
+! =========================================
+
+enable
+configure terminal
+
+hostname R-Barahona
+
+banner motd #
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!   PROHIBIDO ACCESO SIN PERMISO    !!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+#
+
+line console 0
+exec-timeout 15
+password quisqueya
+login local
+logging synchronous
+exit
+
+ip domain-name tufuturo.com.do
+
+crypto key generate rsa
+2046
+
+ip ssh version 2
+
+username Efren privilege 15 password tigre
+username Ezequiel privilege 15 password leon
+username Oliver privilege 7 password aguila
+username Justin privilege 7 password lobo
+
+line vty 0 4
+exec-timeout 15
+transport input ssh
+login local
+logging synchronous
+exit
+
+service password-encryption
+
+do write memory
+
+###################################------------------------------##############################\
+
+
+
 enable
 configure terminal
 
