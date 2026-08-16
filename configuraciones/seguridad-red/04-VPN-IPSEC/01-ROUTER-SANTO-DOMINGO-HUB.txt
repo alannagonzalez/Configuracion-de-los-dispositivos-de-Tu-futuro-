@@ -1,0 +1,111 @@
+-----------------------------------------
+Router Santo Domingo (HUB)
+-----------------------------------------
+
+enable
+configure terminal
+
+crypto isakmp policy 10
+ encryption aes 256
+ hash sha256
+ authentication pre-share
+ group 14
+ lifetime 86400
+exit
+
+crypto isakmp key SD-Santiago-2024 address 19.0.0.5
+crypto isakmp key SD-Romana-2024 address 19.0.0.9
+crypto isakmp key SD-PuertoPlata-2024 address 19.0.0.13
+crypto isakmp key SD-Barahona-2024 address 19.0.0.17
+
+crypto ipsec transform-set TS-AES256 esp-aes 256 esp-sha256-hmac
+ mode tunnel
+exit
+
+ip access-list extended VPN-SD-SANTIAGO
+ permit ip 192.168.0.0 0.0.0.255 192.168.4.0 0.0.0.255
+ permit ip 192.168.0.0 0.0.0.255 192.168.5.0 0.0.0.127
+ permit ip 192.168.0.0 0.0.0.255 192.168.5.128 0.0.0.127
+ permit ip 192.168.1.0 0.0.0.127 192.168.4.0 0.0.0.255
+ permit ip 192.168.1.0 0.0.0.127 192.168.5.0 0.0.0.127
+ permit ip 192.168.1.0 0.0.0.127 192.168.5.128 0.0.0.127
+ permit ip 192.168.1.128 0.0.0.127 192.168.4.0 0.0.0.255
+ permit ip 192.168.1.128 0.0.0.127 192.168.5.0 0.0.0.127
+ permit ip 192.168.1.128 0.0.0.127 192.168.5.128 0.0.0.127
+ permit ip 192.168.2.0 0.0.0.127 192.168.4.0 0.0.0.255
+ permit ip 192.168.2.0 0.0.0.127 192.168.5.0 0.0.0.127
+ permit ip 192.168.2.0 0.0.0.127 192.168.5.128 0.0.0.127
+exit
+
+ip access-list extended VPN-SD-ROMANA
+ permit ip 192.168.0.0 0.0.0.255 192.168.6.0 0.0.0.127
+ permit ip 192.168.0.0 0.0.0.255 192.168.6.128 0.0.0.63
+ permit ip 192.168.0.0 0.0.0.255 192.168.6.192 0.0.0.63
+ permit ip 192.168.1.0 0.0.0.127 192.168.6.0 0.0.0.127
+ permit ip 192.168.1.0 0.0.0.127 192.168.6.128 0.0.0.63
+ permit ip 192.168.1.0 0.0.0.127 192.168.6.192 0.0.0.63
+ permit ip 192.168.1.128 0.0.0.127 192.168.6.0 0.0.0.127
+ permit ip 192.168.1.128 0.0.0.127 192.168.6.128 0.0.0.63
+ permit ip 192.168.1.128 0.0.0.127 192.168.6.192 0.0.0.63
+ permit ip 192.168.2.0 0.0.0.127 192.168.6.0 0.0.0.127
+ permit ip 192.168.2.0 0.0.0.127 192.168.6.128 0.0.0.63
+ permit ip 192.168.2.0 0.0.0.127 192.168.6.192 0.0.0.63
+exit
+
+ip access-list extended VPN-SD-PUERTOPLATA
+ permit ip 192.168.0.0 0.0.0.255 192.168.7.0 0.0.0.127
+ permit ip 192.168.0.0 0.0.0.255 192.168.7.128 0.0.0.127
+ permit ip 192.168.1.0 0.0.0.127 192.168.7.0 0.0.0.127
+ permit ip 192.168.1.0 0.0.0.127 192.168.7.128 0.0.0.127
+ permit ip 192.168.1.128 0.0.0.127 192.168.7.0 0.0.0.127
+ permit ip 192.168.1.128 0.0.0.127 192.168.7.128 0.0.0.127
+ permit ip 192.168.2.0 0.0.0.127 192.168.7.0 0.0.0.127
+ permit ip 192.168.2.0 0.0.0.127 192.168.7.128 0.0.0.127
+exit
+
+ip access-list extended VPN-SD-BARAHONA
+ permit ip 192.168.0.0 0.0.0.255 192.168.8.0 0.0.0.127
+ permit ip 192.168.0.0 0.0.0.255 192.168.8.128 0.0.0.127
+ permit ip 192.168.1.0 0.0.0.127 192.168.8.0 0.0.0.127
+ permit ip 192.168.1.0 0.0.0.127 192.168.8.128 0.0.0.127
+ permit ip 192.168.1.128 0.0.0.127 192.168.8.0 0.0.0.127
+ permit ip 192.168.1.128 0.0.0.127 192.168.8.128 0.0.0.127
+ permit ip 192.168.2.0 0.0.0.127 192.168.8.0 0.0.0.127
+ permit ip 192.168.2.0 0.0.0.127 192.168.8.128 0.0.0.127
+exit
+
+crypto map VPN-MAP 10 ipsec-isakmp
+ set peer 19.0.0.5
+ set transform-set TS-AES256
+ set pfs group14
+ match address VPN-SD-SANTIAGO
+exit
+
+crypto map VPN-MAP 20 ipsec-isakmp
+ set peer 19.0.0.9
+ set transform-set TS-AES256
+ set pfs group14
+ match address VPN-SD-ROMANA
+exit
+
+crypto map VPN-MAP 30 ipsec-isakmp
+ set peer 19.0.0.13
+ set transform-set TS-AES256
+ set pfs group14
+ match address VPN-SD-PUERTOPLATA
+exit
+
+crypto map VPN-MAP 40 ipsec-isakmp
+ set peer 19.0.0.17
+ set transform-set TS-AES256
+ set pfs group14
+ match address VPN-SD-BARAHONA
+exit
+
+interface e0/2
+ crypto map VPN-MAP
+exit
+
+end
+write memory
+
