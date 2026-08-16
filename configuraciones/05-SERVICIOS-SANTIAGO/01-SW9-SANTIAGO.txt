@@ -1,1 +1,19 @@
+! ==========================================
+! CONFIGURACION SW9 - SCRIPT COMPLETO
+! ==========================================
+enable
+configure terminal
+
+! ------------------------------------------
+! 1. NOMBRE DEL SWITCH Y CREACION DE VLANS
+! ------------------------------------------
+hostname SW9
+
+vlan 25
+ name SERVIDORES
+vlan 30
+ name VENTAS
+vlan 35
+ name ADMINISTRACION
+exit
 
