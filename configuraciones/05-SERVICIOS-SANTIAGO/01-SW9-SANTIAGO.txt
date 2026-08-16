@@ -17,3 +17,63 @@ vlan 35
  name ADMINISTRACION
 exit
 
+! ------------------------------------------
+! 2. PUERTOS TRONCALES HACIA ROUTER SANTIAGO
+! ------------------------------------------
+interface Ethernet0/0
+ description TRUNK-HACIA-SANTIAGO-E0/1
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 25,30,35
+ no shutdown
+ exit
+
+interface Ethernet1/0
+ description TRUNK-RESPALDO-SANTIAGO-E0/2
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 25,30,35
+ no shutdown
+ exit
+
+! ------------------------------------------
+! 3. PUERTOS DE ACCESO - SERVIDORES (VLAN 25)
+! ------------------------------------------
+
+! Servidor FTP-RADIUS
+interface Ethernet0/1
+ description SERVIDOR-FTP-RADIUS
+ switchport mode access
+ switchport access vlan 25
+ no shutdown
+ exit
+
+! Servidor MAIL
+interface Ethernet0/2
+ description SERVIDOR-MAIL
+ switchport mode access
+ switchport access vlan 25
+ no shutdown
+ exit
+
+! Servidor DNS-WEB-DHCP
+interface Ethernet0/3
+ description SERVIDOR-DNS-WEB-DHCP
+ switchport mode access
+ switchport access vlan 25
+ no shutdown
+ exit
+
+! ------------------------------------------
+! 4. GUARDAR CONFIGURACION EN NVRAM
+! ------------------------------------------
+end
+write memory
+
+! ==========================================
+! 5. COMANDOS DE VERIFICACION
+! ==========================================
+show vlan brief
+show interfaces trunk
+show ip interface brief
+
