@@ -1,0 +1,22 @@
+COMANDOS PARA PNETLAB Y MOBAXTERM
+
+1. Conectar el servidor Linux a Internet
+
+ip link set eth1 up
+dhclient eth1
+
+
+2. Instalar SSH para conectarse mediante MobaXterm
+
+apt update && apt install openssh-server -y
+service ssh start
+
+
+3. Ver la dirección IP
+
+ip a
+
+
+4. Eliminar la IP de eth1
+
+sudo ip addr flush dev eth1
