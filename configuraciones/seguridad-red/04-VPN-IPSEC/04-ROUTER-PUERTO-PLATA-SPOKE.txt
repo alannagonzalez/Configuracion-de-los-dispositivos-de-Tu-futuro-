@@ -1,0 +1,51 @@
+
+
+
+
+
+
+-----------------------------------------
+Para Puerto Plata (SPOKE)
+-----------------------------------------
+
+enable
+configure terminal
+
+crypto isakmp policy 10
+ encryption aes 256
+ hash sha256
+ authentication pre-share
+ group 14
+ lifetime 86400
+exit
+
+crypto isakmp key SD-PuertoPlata-2024 address 19.0.0.1
+
+crypto ipsec transform-set TS-AES256 esp-aes 256 esp-sha256-hmac
+ mode tunnel
+exit
+
+ip access-list extended VPN-PUERTOPLATA-SD
+ permit ip 192.168.7.0 0.0.0.127 192.168.0.0 0.0.0.255
+ permit ip 192.168.7.0 0.0.0.127 192.168.1.0 0.0.0.127
+ permit ip 192.168.7.0 0.0.0.127 192.168.1.128 0.0.0.127
+ permit ip 192.168.7.0 0.0.0.127 192.168.2.0 0.0.0.127
+ permit ip 192.168.7.128 0.0.0.127 192.168.0.0 0.0.0.255
+ permit ip 192.168.7.128 0.0.0.127 192.168.1.0 0.0.0.127
+ permit ip 192.168.7.128 0.0.0.127 192.168.1.128 0.0.0.127
+ permit ip 192.168.7.128 0.0.0.127 192.168.2.0 0.0.0.127
+exit
+
+crypto map VPN-MAP 10 ipsec-isakmp
+ set peer 19.0.0.1
+ set transform-set TS-AES256
+ set pfs group14
+ match address VPN-PUERTOPLATA-SD
+exit
+
+interface e0/1
+ crypto map VPN-MAP
+exit
+
+end
+write memory
