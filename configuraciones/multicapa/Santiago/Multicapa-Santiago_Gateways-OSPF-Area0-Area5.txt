@@ -1,1 +1,46 @@
+=========================================
+MULTICAPA SANTIAGO
+AREA 0 - ISP
+AREA 5 - SANTIAGO
+=========================================
 
+enable
+configure terminal
+
+ip routing
+
+interface e0/0
+description Conexion ISP
+no switchport
+ip address 19.0.0.5 255.255.255.252
+no shutdown
+exit
+
+interface vlan 25
+description Gateway DataCenter
+ip address 192.168.4.1 255.255.255.0
+no shutdown
+exit
+
+interface vlan 30
+description Gateway Ventas
+ip address 192.168.5.1 255.255.255.128
+no shutdown
+exit
+
+interface vlan 35
+description Gateway Administracion
+ip address 192.168.5.129 255.255.255.128
+no shutdown
+exit
+
+router ospf 1
+router-id 10.10.5.1
+network 19.0.0.4 0.0.0.3 area 0
+network 192.168.4.0 0.0.0.255 area 5
+network 192.168.5.0 0.0.0.127 area 5
+network 192.168.5.128 0.0.0.127 area 5
+exit
+
+end
+write memory
